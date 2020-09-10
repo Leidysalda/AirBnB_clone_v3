@@ -1,4 +1,4 @@
-#!/urs/bin/python3
+#!/usr/bin/python3
 """create a modiule Flask"""
 
 from flask import Flask
