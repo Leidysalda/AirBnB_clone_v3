@@ -108,8 +108,9 @@ class TestFileStorage(unittest.TestCase):
         # storage = DBStorage()
         storage = models.storage
         state = State()
+        state.name = "California"
         state.save()
-        # state.id = '1'
+
         obj = storage.get(State, state.id)
         obj_id = obj.id
         expect_id = state.id

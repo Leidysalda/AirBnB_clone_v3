@@ -128,12 +128,20 @@ class TestFileStorage(unittest.TestCase):
         expect_objs = 0
         self.assertEqual(expect_objs, storage.count(objs))
 
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_get(self):
         """ Test if there is exist """
         storage = FileStorage()
         state = State()
+        state.name = "name"
         state.save()
         obj = storage.get(State, state.id)
         obj_id = obj.id
         expect_id = state.id
         self.assertEqual(expect_id, obj_id)
+
+    def test_get_exist(self):
+        """ Test if the obtained object """
+        storage = FileStorage()
+        obj = storage.get(None, None)
+        self.assertIsNone(obj)
