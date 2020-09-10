@@ -70,6 +70,13 @@ test_db_storage.py'])
 
 class TestFileStorage(unittest.TestCase):
     """Test the FileStorage class"""
+
+    @classmethod
+    def setUpClass(cls):
+        """Set up for the DBStorage tests"""
+        # cls.state = State()
+        # cls.state.save()
+
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_all_returns_dict(self):
         """Test that all returns a dictionaty"""
@@ -86,3 +93,24 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_save(self):
         """Test that save properly saves objects to file.json"""
+
+    def test_count(self):
+        """ Test for the exist object """
+        # storage = DBStorage()
+        storage = models.storage
+
+        objs = storage.all()
+        expect_objs = 0
+        self.assertEqual(expect_objs, storage.count(objs))
+
+    def test_get(self):
+        """ Test if there is exist """
+        # storage = DBStorage()
+        storage = models.storage
+        state = State()
+        state.save()
+        # state.id = '1'
+        obj = storage.get(State, state.id)
+        obj_id = obj.id
+        expect_id = state.id
+        self.assertEqual(expect_id, obj_id)
