@@ -70,9 +70,16 @@ test_file_storage.py'])
 
 class TestFileStorage(unittest.TestCase):
     """Test the FileStorage class"""
+
+    @classmethod
+    def setUpClass(cls):
+        """Set up for the DBStorage tests"""
+        # cls.state = State()
+        # cls.State.save()
+
     @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_all_returns_dict(self):
-        """Test that all returns the FileStorage.__objects attr"""
+        """ Test that all returns the FileStorage.__objects attr"""
         storage = FileStorage()
         new_dict = storage.all()
         self.assertEqual(type(new_dict), dict)
@@ -113,3 +120,20 @@ class TestFileStorage(unittest.TestCase):
         with open("file.json", "r") as f:
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
+
+    def test_count(self):
+        """ Test for the exist object """
+        storage = FileStorage()
+        objs = storage.all()
+        expect_objs = 0
+        self.assertEqual(expect_objs, storage.count(objs))
+
+    def test_get(self):
+        """ Test if there is exist """
+        storage = FileStorage()
+        state = State()
+        state.save()
+        obj = storage.get(State, state.id)
+        obj_id = obj.id
+        expect_id = state.id
+        self.assertEqual(expect_id, obj_id)
