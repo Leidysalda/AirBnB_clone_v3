@@ -66,19 +66,19 @@ def create_new_state(state_id=None):
 def update_state(state_id=None):
     """ create a new state """
 
-    state = storage.get(State, state_id)
-    if state is None:
-        return jsonify({'Error': 'Not found'}), 404
-
     # body of request
     request_json = request.get_json()
     if request_json is None:
         return jsonify({'Error': 'Not a JSON'}), 400
 
+    state = storage.get(State, state_id)
+    if state is None:
+        return jsonify({'Error': 'Not found'}), 404
+
     ignore = ['id', 'created_at', 'updated_at']
 
-    for key, value in request_json:
-        if key in ignore:
+    for key, value in request_json.items():
+        if key not in ignore:
             setattr(state, key, value)
     storage.save()
 
