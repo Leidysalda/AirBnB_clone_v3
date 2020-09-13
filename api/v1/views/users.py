@@ -43,14 +43,14 @@ def delete_user(user_id=None):
 
 @app_views.route("/users", methods=["POST"])
 def create_new_user(state_id=None):
-    """ create new resource by my list of amenities """
+    """ create new resource by my list of users """
 
     user_object_json = request.get_json()
     if user_object_json is None:
         return jsonify({'Error': 'Not a JSON'}), 400
 
     if 'email' not in user_object_json:
-        return jsonify({'Error': 'Missing email'})
+        return jsonify({'Error': 'Missing email'}), 400
 
     if 'password' not in user_object_json.keys():
         return jsonify({'Error': 'Missing password'}), 400
