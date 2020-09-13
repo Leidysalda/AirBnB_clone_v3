@@ -4,9 +4,12 @@ from flask import Blueprint
 from models.city import City
 from models.state import State
 from models.amenity import Amenity
+from models.user import User
+
 
 app_views = Blueprint('index', __name__, url_prefix='/api/v1/')
 from api.v1.views.index import *
 from api.v1.views.states import *
 from api.v1.views.cities import *
 from api.v1.views.amenities import *
+from api.v1.views.users import *
