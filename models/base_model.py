@@ -10,6 +10,7 @@ import sqlalchemy
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 import uuid
+from hashlib import md5
 
 time = "%Y-%m-%dT%H:%M:%S.%f"
 
@@ -55,10 +56,12 @@ class BaseModel:
     def save(self):
         """updates the attribute 'updated_at' with the current datetime"""
         self.updated_at = datetime.utcnow()
+        if self.__class__.__name__ == 'User' and hasattr(self, 'password'):
+            self.password = md5(self.password.encode()).hexdigest()
         models.storage.new(self)
         models.storage.save()
 
-    def to_dict(self):
+    def to_dict(self, no_passwd_fileStorage=False):
         """returns a dictionary containing all keys/values of the instance"""
         new_dict = self.__dict__.copy()
         if "created_at" in new_dict:
@@ -68,6 +71,11 @@ class BaseModel:
         new_dict["__class__"] = self.__class__.__name__
         if "_sa_instance_state" in new_dict:
             del new_dict["_sa_instance_state"]
+
+        print(no_passwd_fileStorage)
+        if self.__class__.__name__ == 'User' and not no_passwd_fileStorage:
+            del new_dict["password"]
+
         return new_dict
 
     def delete(self):
